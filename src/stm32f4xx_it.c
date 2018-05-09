@@ -40,3 +40,18 @@ void SysTick_Handler(void)
 	osSystickHandler();
 #endif
 }
+
+/**
+* @brief This function handles USART2 global interrupt.
+*/
+void USART2_IRQHandler(void)
+{
+
+   if(!FMSTR_DISABLE)
+   {
+      FMSTR_ProcessSCI();
+   }
+  
+   HAL_UART_IRQHandler(&huart2);
+
+}

@@ -11,6 +11,9 @@ static void RCC_INIT(void);
 void MAIN_INIT(void)
 {
 	RCC_INIT();
+	MX_USART2_UART_Init();
+	FMSTR_Init();
+	BSP_LED_Init(LED2);
 }
 
 static void RCC_INIT(void)
@@ -33,8 +36,8 @@ static void RCC_INIT(void)
 	RCC_OscInit.PLL.PLLState = RCC_PLL_ON;
 	RCC_OscInit.PLL.PLLSource = RCC_PLLSOURCE_HSE;
 	RCC_OscInit.PLL.PLLM = 8;
-   RCC_OscInit.PLL.PLLN = 336;
-   RCC_OscInit.PLL.PLLP = RCC_PLLP_DIV4;
+    RCC_OscInit.PLL.PLLN = 336;
+    RCC_OscInit.PLL.PLLP = RCC_PLLP_DIV4;
 	RCC_OscInit.PLL.PLLQ = 7;
 
 	RCC_ClockInit.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK

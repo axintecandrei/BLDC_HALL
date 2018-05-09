@@ -9,8 +9,12 @@
 #define MCU_INIT_H_
 
 #include "stm32f4xx.h"
+#include "stm32f4xx_nucleo.h"
+#include "usart.h"
 #include "gpio.h"
 #include "timers.h"
+#include "freemaster.h"
+#include "freemaster_STM32F4xx.h"
 
 
 

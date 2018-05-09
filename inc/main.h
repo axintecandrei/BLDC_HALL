@@ -10,6 +10,8 @@
 
 #include "mcu_init.h"
 #include "utilities.h"
-extern int blocker;
+#include "usart.h"
+#include "freemaster.h"
+#include "freemaster_private.h"
 
 #endif /* MAIN_H_ */
