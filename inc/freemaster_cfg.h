@@ -71,7 +71,7 @@
 /* Fast Recorder Control */
 #define FMSTR_USE_FASTREC      0    /* Activate Fast Recorder driver */
 
-#define FMSTR_REC_FLOAT_TRIG   1    /* enable/disable floating point triggering */
+#define FMSTR_REC_FLOAT_TRIG   0    /* enable/disable floating point triggering */
 
 /*****************************************************************************
 * Target-side address translation (TSA)

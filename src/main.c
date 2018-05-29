@@ -9,17 +9,23 @@
 */
 #include "main.h"
 
-
+uint16_t adc_val;
 int main(void)
 {
 
 	MAIN_INIT();
-   unsigned char b = 65;
+    adc_val=0;
+
 	for(;;)
 	{
-		/*BSP_LED_On(LED2);
-		UTIL_delay(1);
-		BSP_LED_Off(LED2);*/
-		HAL_UART_Transmit(&huart2,&b,1,2000);
+		adc_val = ADC_GetConv();
+
+		GPIO_ByteOnPins(adc_val);
+
+	    if(!FMSTR_DISABLE)
+	    {
+	      FMSTR_Poll();
+	      FMSTR_Recorder();
+	    }
 	}
 }

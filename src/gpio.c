@@ -47,6 +47,25 @@ void GPIO_INIT()
 	 * if properly managed*/
 	GPIO_InitTypeDef GPIOx_Init;
 
+	GPIOx_Init.Pin   = D0 | D1 | D2 | D3;
+	GPIOx_Init.Mode  = GPIO_MODE_OUTPUT_PP;
+	GPIOx_Init.Pull  = GPIO_NOPULL;
+	GPIOx_Init.Speed = GPIO_SPEED_MEDIUM;
+
+	/*Enable bus clock for ports*/
+	__GPIOC_CLK_ENABLE();
+    /*HAL func that will do the proper initialisation*/
+	HAL_GPIO_Init(NIBBLE_1_PORT, &GPIOx_Init);
+
+	GPIOx_Init.Pin   = D4 | D5 | D6 | D7 ;
+	GPIOx_Init.Mode  = GPIO_MODE_OUTPUT_PP;
+	GPIOx_Init.Pull  = GPIO_NOPULL;
+	GPIOx_Init.Speed = GPIO_SPEED_MEDIUM;
+
+	/*Enable bus clock for ports*/
+	__GPIOA_CLK_ENABLE();
+    /*HAL func that will do the proper initialisation*/
+	HAL_GPIO_Init(NIBBLE_2_PORT, &GPIOx_Init);
 	GPIOx_Init.Pin   = BUTT_1 | BUTT_2 ;
 	GPIOx_Init.Mode  = GPIO_MODE_INPUT;
 	GPIOx_Init.Pull  = GPIO_PULLDOWN;
@@ -106,6 +125,22 @@ uint8_t GPIO_DebounceButton(GPIO_TypeDef* port, uint16_t button, debounce_state_
 
 
 	return port_debounce_str->button_state;
+}
+
+void GPIO_ByteOnPins(uint8_t byte)
+{
+	byteAsbits_t out_bits;
+
+	UTIL_ByteToBits(byte, &out_bits);
+
+	HAL_GPIO_WritePin(NIBBLE_1_PORT,D0,out_bits.bit_0);
+	HAL_GPIO_WritePin(NIBBLE_1_PORT,D1,out_bits.bit_1);
+	HAL_GPIO_WritePin(NIBBLE_1_PORT,D2,out_bits.bit_2);
+	HAL_GPIO_WritePin(NIBBLE_1_PORT,D3,out_bits.bit_3);
+	HAL_GPIO_WritePin(NIBBLE_2_PORT,D4,out_bits.bit_4);
+	HAL_GPIO_WritePin(NIBBLE_2_PORT,D5,out_bits.bit_5);
+	HAL_GPIO_WritePin(NIBBLE_2_PORT,D6,out_bits.bit_6);
+	HAL_GPIO_WritePin(NIBBLE_2_PORT,D7,out_bits.bit_7);
 }
 
 

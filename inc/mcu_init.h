@@ -10,6 +10,8 @@
 
 #include "stm32f4xx.h"
 #include "stm32f4xx_nucleo.h"
+#include "adc.h"
+#include "lcd.h"
 #include "usart.h"
 #include "gpio.h"
 #include "timers.h"

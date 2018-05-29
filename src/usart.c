@@ -46,7 +46,7 @@ UART_HandleTypeDef huart2;
 
 void MX_USART2_UART_Init(void)
 {
-  __USART2_CLK_ENABLE();
+
   huart2.Instance = USART2;
   huart2.Init.BaudRate = 115200;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
@@ -55,13 +55,12 @@ void MX_USART2_UART_Init(void)
   huart2.Init.Mode = UART_MODE_TX_RX;
   huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
   huart2.Init.OverSampling = UART_OVERSAMPLING_16;
-  if (HAL_UART_Init(&huart2) != HAL_OK)
-  {
 
-  }
-  //  __HAL_UART_ENABLE_IT(&huart2,UART_IT_TXE);
-    __HAL_UART_ENABLE_IT(&huart2,UART_IT_RXNE);
-  //  __HAL_UART_ENABLE_IT(&huart2,UART_IT_TC);
+  __HAL_UART_ENABLE_IT(&huart2,UART_IT_TXE);
+  __HAL_UART_ENABLE_IT(&huart2,UART_IT_RXNE);
+  __HAL_UART_ENABLE_IT(&huart2,UART_IT_TC);
+  HAL_UART_Init(&huart2);
+
 }
 
 void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)

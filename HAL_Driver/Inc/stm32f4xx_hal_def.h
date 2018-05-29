@@ -44,6 +44,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx.h"
+#include "stm32f4xx_hal_rcc.h"
 #include "Legacy/stm32_hal_legacy.h"
 #include <stdio.h>
 
