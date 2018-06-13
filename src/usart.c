@@ -44,7 +44,7 @@ UART_HandleTypeDef huart2;
 
 /* USART2 init function */
 
-void MX_USART2_UART_Init(void)
+void USART2_UART_Init(void)
 {
 
   huart2.Instance = USART2;

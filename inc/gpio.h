@@ -8,8 +8,6 @@
 #ifndef GPIO_H_
 #define GPIO_H_
 #include "stm32f4xx.h"
-#include "stm32f4xx_hal.h"
-#include "stm32f4xx_hal_def.h"
 #include "utilities.h"
 
 /*
@@ -22,7 +20,7 @@
 #define D2            GPIO_PIN_2
 #define D3            GPIO_PIN_3
 
-#define NIBBLE_2_PORT GPIOA
+#define NIBBLE_2_PORT GPIOB
 #define D4            GPIO_PIN_6
 #define D5            GPIO_PIN_7
 #define D6            GPIO_PIN_8
@@ -32,6 +30,7 @@
 #define BUTT_PORT          GPIOA
 #define BUTT_1             GPIO_PIN_11
 #define BUTT_2             GPIO_PIN_12
+
 
 #define CONFIDENCE_THR    (100)
 #define BUTT_NR			  (  2)

@@ -14,7 +14,9 @@
 #include "lcd.h"
 #include "usart.h"
 #include "gpio.h"
+#include "bldc_pwm.h"
 #include "timers.h"
+#include "hall.h"
 #include "freemaster.h"
 #include "freemaster_STM32F4xx.h"
 

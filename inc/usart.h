@@ -52,7 +52,7 @@
 extern UART_HandleTypeDef huart2;
 
 extern void Error_Handler(void);
-void MX_USART2_UART_Init(void);
+void USART2_UART_Init(void);
 #ifdef __cplusplus
 }
 #endif

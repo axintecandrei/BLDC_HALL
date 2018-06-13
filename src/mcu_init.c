@@ -11,13 +11,14 @@ static void RCC_INIT(void);
 void MAIN_INIT(void)
 {
 	RCC_INIT();
-	GPIO_INIT();
-	ADC_INIT();
-	LCD_INIT();
 
-	MX_USART2_UART_Init();
+	ADC_INIT();
+	BLDC_PWM_INIT();
+	HALL_INIT();
+
+	USART2_UART_Init();
 	FMSTR_Init();
-	//BSP_LED_Init(LED2);
+
 }
 
 static void RCC_INIT(void)

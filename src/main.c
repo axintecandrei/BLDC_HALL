@@ -9,18 +9,29 @@
 */
 #include "main.h"
 
-uint16_t adc_val;
+uint16_t h1,h2,h3;
+uint16_t dtc_u,dtc_v,dtc_w;
+uint8_t en_gate;
 int main(void)
 {
 
 	MAIN_INIT();
-    adc_val=0;
 
+    h1=0;
+    h2=0;
+    h3=0;
+    dtc_u = 50;
+	dtc_v = 50;
+	dtc_w = 50;
+	en_gate = 0;
 	for(;;)
 	{
-		adc_val = ADC_GetConv();
+        HALL_GET_STATE(&h1,&h2,&h3);
 
-		GPIO_ByteOnPins(adc_val);
+	    TIM1->CCR1 = ((float)dtc_u/100.0F)*TIM1->ARR;
+		TIM1->CCR2 = ((float)dtc_v/100.0F)*TIM1->ARR;
+		TIM1->CCR3 = ((float)dtc_w/100.0F)*TIM1->ARR;
+		HAL_GPIO_WritePin(GPIOB,PWM_EN_GATE,en_gate);
 
 	    if(!FMSTR_DISABLE)
 	    {
