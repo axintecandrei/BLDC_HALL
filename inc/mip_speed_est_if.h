@@ -25,9 +25,9 @@ int32_t PORT_Mip_Est_Speed;
 #define Set_Mip_Est_Speed(x) (PORT_Mip_Est_Speed = (x))
 #define Get_Mip_Est_Speed()   (*((const int32_t *) &PORT_Mip_Est_Speed))
 
-uint32_t PORT_Mip_Hall_InputCapture;
+int32_t PORT_Mip_Hall_InputCapture;
 #define Set_Mip_Hall_InputCapture(x) (PORT_Mip_Hall_InputCapture = (x))
-#define Get_Mip_Hall_InputCapture()   (*((const uint32_t *) &PORT_Mip_Hall_InputCapture))
+#define Get_Mip_Hall_InputCapture()   (*((const int32_t *) &PORT_Mip_Hall_InputCapture))
 
 /*
  * FUNCTIONS

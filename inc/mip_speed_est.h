@@ -24,7 +24,6 @@
  */
 TIM_HandleTypeDef htim2;
 
-uint32_t IC_RAW_VAL[1];
 /*
  * FUNCTIONS
  */

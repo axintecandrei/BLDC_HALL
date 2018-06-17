@@ -7,7 +7,7 @@
 
 #ifndef MOC_SPEED_CTRL_IF_H_
 #define MOC_SPEED_CTRL_IF_H_
-
+#include "stm32f4xx.h"
 /*
  * DEFINES
  */
@@ -21,7 +21,9 @@
 /*
  * VARIABLES
  */
-
+int16_t PORT_Mip_Req_Speed;
+#define Set_Mip_Req_Speed(x) (PORT_Mip_Req_Speed = (x))
+#define Get_Mip_Req_Speed()   (*((const int16_t *) &PORT_Mip_Req_Speed))
 
 /*
  * FUNCTIONS

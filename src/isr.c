@@ -40,7 +40,7 @@ void TIM2_IRQHandler ()
 	   Set_Mip_Hall_InputCapture(current_capture_value - previous_capture_value);
 	   if(Get_Mip_Hall_InputCapture() < 0)
 	   {
-		   Set_Mip_Hall_InputCapture (Get_Mip_Hall_InputCapture() + 4294967295);
+		   Set_Mip_Hall_InputCapture (Get_Mip_Hall_InputCapture() + 0xFFFF);
 	   }
 	   TIM2->CCER &= ~TIM_CCER_CC1P;
    }

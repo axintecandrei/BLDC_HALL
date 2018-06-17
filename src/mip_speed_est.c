@@ -22,13 +22,13 @@ void MIP_SPEED_EST_INIT()
    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
    /*
-   * Prescaler 3 => Fcnt = Ftim_clk/(Prescaler + 1)
-   *                Fcnt = 21Mhz
-   *                Tcnt = 47.61904761905 ns
+   * Prescaler 83 => Fcnt = Ftim_clk/(Prescaler + 1)
+   *                 Fcnt = 84Khz
+   *                 Tcnt = 10 us
    */
    TIM2->PSC = 839;
    /* ARR <=> period before overflow */
-   TIM2->ARR = 4294967295;
+   TIM2->ARR = 0xFFFF;
    /*Enable IC on ch 1*/
    TIM2->CCMR1 = ((0x00<<24) | (0x00<<16) | (0x00<<8) | (0x01));
 
