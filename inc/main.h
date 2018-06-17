@@ -8,9 +8,9 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
-#include "mcu_init.h"
+#include "main_init.h"
 #include "utilities.h"
-#include "usart.h"
+#include "lld_usart.h"
 #include "freemaster.h"
 #include "freemaster_private.h"
 
