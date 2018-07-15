@@ -9,7 +9,7 @@
 #define BLDC_PWM_H_
 
 #include "lld_bldc_pwm_if.h"
-#include "lld_hall.h"
+#include "lld_hall_if.h"
 
 /*
  * DEFINES

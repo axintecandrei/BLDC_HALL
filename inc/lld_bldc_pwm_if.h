@@ -56,7 +56,5 @@ uint8_t PORT_Bldc_En_Gate;
 
 extern void BLDC_PWM_INIT();
 
-extern void BLDC_PWM_GPIO_INIT();
-
 extern void BLDC_PWM_HANDLER();
 #endif /* LLD_BLDC_PWM_IF_H_ */

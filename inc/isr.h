@@ -7,6 +7,8 @@
 #include "task_scheduler.h"
 #include "lld_usart.h"
 #include "lld_bldc_pwm.h"
+#include "lld_gpio.h"
+#include "lld_adc.h"
 #include "mip_speed_est.h"
 #include "freemaster.h"
 #include "freemaster_private.h"

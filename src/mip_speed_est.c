@@ -48,10 +48,28 @@ void MIP_SPEED_EST_INIT()
 void MIP_SPEED_EST_MAIN()
 {
 	float temp_speed;
-	temp_speed = ((float)Get_Mip_Hall_InputCapture())*0.00001;
-	temp_speed = 1.0F/temp_speed;
-	temp_speed = temp_speed * 60.0F;
 
-	Set_Mip_Est_Speed(temp_speed/2);
+#if 0
+	/*The capture value represents count of 10us steps taken
+	 * between a rising and falling of hall sensor*/
+	temp_speed = ((float)Get_Mip_Hall_InputCapture())*0.00001;
+	/*Going from time to frequency F_hall = 1/T_hall*/
+	temp_speed = 1.0F/temp_speed;
+	/*Going from Hz to rpm, multiplying by 60
+	 * BUT, for 1 mech rot, there are 2 captures of the hall
+	 * so by divinding by 2 results the mech speed*/
+	temp_speed = temp_speed * 30.0F;
+#endif
+
+	if(Get_Mip_Hall_InputCapture() !=0)
+	{
+		temp_speed = 6000000/Get_Mip_Hall_InputCapture();
+	}else
+	{
+		temp_speed = 0;
+	}
+
+
+	Set_Mip_Est_Speed(temp_speed);
 
 }

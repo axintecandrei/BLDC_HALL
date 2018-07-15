@@ -43,7 +43,7 @@
 * Support for Application Commands 
 ******************************************************************************/
 
-#define FMSTR_USE_APPCMD       1    /* enable/disable App.Commands support */
+#define FMSTR_USE_APPCMD       0    /* enable/disable App.Commands support */
 #define FMSTR_APPCMD_BUFF_SIZE 32   /* App.Command data buffer size */
 #define FMSTR_MAX_APPCMD_CALLS 4    /* how many app.cmd callbacks? (0=disable) */
 
@@ -63,10 +63,10 @@
 #define FMSTR_REC_OWNBUFF      0    /* use user-allocated rec. buffer (1=yes) */
 
 /* built-in recorder buffer (use when FMSTR_REC_OWNBUFF is 0) */
-#define FMSTR_REC_BUFF_SIZE    2048 /* built-in buffer size */
+#define FMSTR_REC_BUFF_SIZE    4196 /* built-in buffer size */
 
 /* recorder time base, specifies how often the recorder is called in the user app. */
-#define FMSTR_REC_TIMEBASE     FMSTR_REC_BASE_MICROSEC(64) /* 0 = "unknown" *//*64- 100us*/
+#define FMSTR_REC_TIMEBASE     FMSTR_REC_BASE_MICROSEC(100) /* 0 = "unknown" *//*64- 100us*/
 
 /* Fast Recorder Control */
 #define FMSTR_USE_FASTREC      0    /* Activate Fast Recorder driver */

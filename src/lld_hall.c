@@ -31,11 +31,9 @@ void HALL_INIT()
 	HAL_GPIO_Init(HALL_PORT_B, &GPIOx_Init);
 }
 
-void HALL_GET_STATE(uint8_t * hall_state)
+void HALL_GET_STATE()
 {
-   uint8_t h1,h2,h3;
-   h1 = HAL_GPIO_ReadPin(HALL_PORT_A, HALL_1) ;
-   h2 = HAL_GPIO_ReadPin(HALL_PORT_A, HALL_2) ;
-   h3 = HAL_GPIO_ReadPin(HALL_PORT_B, HALL_3) ;
-   *hall_state = (h1<<2) |(h2<<1) | h3;
+	Set_Hall_State((HAL_GPIO_ReadPin(HALL_PORT_A, HALL_1)<<2) |
+		           (HAL_GPIO_ReadPin(HALL_PORT_A, HALL_2)<<1) |
+				    HAL_GPIO_ReadPin(HALL_PORT_B, HALL_3));
 }

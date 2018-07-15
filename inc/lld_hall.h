@@ -7,7 +7,7 @@
 
 #ifndef HALL_H_
 #define HALL_H_
-
+#include "lld_hall_if.h"
 #include "stm32f4xx.h"
 #include "utilities.h"
 
@@ -37,6 +37,5 @@
  * FUNCTIONS
  */
 
-void HALL_INIT();
-void HALL_GET_STATE(uint8_t * hall_state);
+
 #endif /* HALL_H_ */

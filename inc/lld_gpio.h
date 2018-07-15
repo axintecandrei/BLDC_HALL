@@ -15,21 +15,20 @@
  */
 
 #define NIBBLE_1_PORT GPIOC
-#define D0            GPIO_PIN_0
-#define D1            GPIO_PIN_1
-#define D2            GPIO_PIN_2
-#define D3            GPIO_PIN_3
+#define D0            GPIO_PIN_2
+#define D1            GPIO_PIN_3
+#define D2            GPIO_PIN_4
+#define D3            GPIO_PIN_5
+
+#define BUTT_PORT     GPIOC
+#define BUTT_1        GPIO_PIN_6
+#define BUTT_2        GPIO_PIN_7
 
 #define NIBBLE_2_PORT GPIOB
 #define D4            GPIO_PIN_6
 #define D5            GPIO_PIN_7
 #define D6            GPIO_PIN_8
 #define D7            GPIO_PIN_9
-
-
-#define BUTT_PORT          GPIOA
-#define BUTT_1             GPIO_PIN_11
-#define BUTT_2             GPIO_PIN_12
 
 
 #define CONFIDENCE_THR    (100)

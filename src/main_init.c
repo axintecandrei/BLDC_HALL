@@ -15,6 +15,7 @@ void MAIN_INIT(void)
 	ADC_INIT();
 	BLDC_PWM_INIT();
 	HALL_INIT();
+	GPIO_INIT();
 	MIP_SPEED_EST_INIT();
 	USART2_UART_Init();
 	FMSTR_Init();

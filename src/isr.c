@@ -3,8 +3,6 @@
 #include "stm32f4xx.h"
 
 
-
-
 /**
   * @brief  This function handles SysTick Handler, but only if no RTOS defines it.
   * @param  None
@@ -15,21 +13,25 @@ void SysTick_Handler(void)
 	HAL_IncTick();
 	HAL_SYSTICK_IRQHandler();
 }
-
+uint32_t ADC_SR, ADC_CR2;
 void TIM1_UP_TIM10_IRQHandler(void)
 {
+
+   HAL_GPIO_TogglePin(GPIOC,D1);
+   ADC_SR = ADC1->SR;
+
    task_scheduler();
+   ADC_CR2 = ADC1->CR2;
    HAL_TIM_IRQHandler(&htim1);
 }
 
 void TIM2_IRQHandler ()
 {
-
    static volatile uint32_t previous_capture_value = 0;
-   static volatile uint32_t current_capture_value;
+   uint32_t current_capture_value;
 
    current_capture_value = TIM2->CCR1;
-
+#if 0
    if(HAL_GPIO_ReadPin(HALL_PORT_A, HALL_1) == 1)
    {
 	   previous_capture_value = current_capture_value;
@@ -44,6 +46,16 @@ void TIM2_IRQHandler ()
 	   }
 	   TIM2->CCER &= ~TIM_CCER_CC1P;
    }
+#else
+   Set_Mip_Hall_InputCapture(current_capture_value - previous_capture_value);
+   if(Get_Mip_Hall_InputCapture() < 0)
+   {
+	   Set_Mip_Hall_InputCapture (Get_Mip_Hall_InputCapture() + 0xFFFF);
+   }
+   previous_capture_value = TIM2->CCR1;
+#endif
+
+
 }
 
 /**
