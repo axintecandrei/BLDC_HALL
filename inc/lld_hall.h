@@ -15,11 +15,10 @@
  * DEFINES
  */
 
-#define HALL_PORT_A        GPIOA
-#define HALL_1             GPIO_PIN_11
-#define HALL_2             GPIO_PIN_12
-#define HALL_PORT_B        GPIOB
-#define HALL_3             GPIO_PIN_12
+#define HALL_PORT          GPIOB
+#define HALL_A             GPIO_PIN_12
+#define HALL_B             GPIO_PIN_13
+#define HALL_C             GPIO_PIN_14
 
 
 

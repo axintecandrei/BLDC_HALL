@@ -35,17 +35,17 @@ typedef enum e_gate_states
 /*
  * VARIABLES
  */
-uint16_t PORT_Bldc_Pwm_U;
-#define Set_Bldc_Pwm_U(x) (PORT_Bldc_Pwm_U = (x))
-#define Get_Bldc_Pwm_U()   (*((const uint16_t *) &PORT_Bldc_Pwm_U))
+uint16_t PORT_Bldc_Pwm_A;
+#define Set_Bldc_Pwm_A(x) (PORT_Bldc_Pwm_A = (x))
+#define Get_Bldc_Pwm_A()   (*((const uint16_t *) &PORT_Bldc_Pwm_A))
 
-uint16_t PORT_Bldc_Pwm_V;
-#define Set_Bldc_Pwm_V(x) (PORT_Bldc_Pwm_V = (x))
-#define Get_Bldc_Pwm_V()   (*((const uint16_t *) &PORT_Bldc_Pwm_V))
+uint16_t PORT_Bldc_Pwm_B;
+#define Set_Bldc_Pwm_B(x) (PORT_Bldc_Pwm_B = (x))
+#define Get_Bldc_Pwm_B()   (*((const uint16_t *) &PORT_Bldc_Pwm_B))
 
-uint16_t PORT_Bldc_Pwm_W;
-#define Set_Bldc_Pwm_W(x) (PORT_Bldc_Pwm_W = (x))
-#define Get_Bldc_Pwm_W()   (*((const uint16_t *) &PORT_Bldc_Pwm_W))
+uint16_t PORT_Bldc_Pwm_C;
+#define Set_Bldc_Pwm_C(x) (PORT_Bldc_Pwm_C = (x))
+#define Get_Bldc_Pwm_C()   (*((const uint16_t *) &PORT_Bldc_Pwm_C))
 
 uint8_t PORT_Bldc_En_Gate;
 #define Set_Bldc_En_Gate(x) (PORT_Bldc_En_Gate = (x))

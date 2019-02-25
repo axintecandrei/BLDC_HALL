@@ -7,7 +7,9 @@
 
 #ifndef UTILITIES_H_
 #define UTILITIES_H_
-#include "stm32f4xx.h"
+#include "../CMSIS/device/stm32f4xx.h"
+#include "config.h"
+
 
 typedef struct byteAsbits_s
 {
@@ -21,7 +23,6 @@ typedef struct byteAsbits_s
 	uint8_t bit_7 :1;
 }byteAsbits_t;
 
-#define LIM(x, l, u ) (((x) <= (l)) ? (l) : (((x) >= (u)) ? (u) : (x)) )
 
 void UTIL_delay(uint32_t moment);
 void UTIL_ByteToBits (uint8_t in_byte, byteAsbits_t* out_bits );

@@ -9,7 +9,7 @@
 #define LCD_H_
 
 #include "utilities.h"
-
+#if CFG_LCD_ON
 /*
  * DEFINES
  */
@@ -67,4 +67,6 @@ void LCD_SendString(char* p_str);
 void LCD_SetCursorTo(uint8_t row, uint8_t col);
 void LCD_SendInt(int32_t in_nr);
 void LCD_SendFloat(float in_nr);
+
+#endif /*CFG_LCD_ON*/
 #endif /* LCD_H_ */

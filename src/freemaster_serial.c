@@ -1179,8 +1179,6 @@ void FMSTR_SendResponse(FMSTR_BPTR pResponse, FMSTR_SIZE8 nLength)
     
 #if (FMSTR_USE_SCI) || (FMSTR_USE_ESCI) || (FMSTR_USE_LPUART)
     {
-        /*lint -esym(550, dummySR) */        
-        volatile FMSTR_SCISR dummySR;
 
         /* disable receiver, enable transmitter (single-wire communication) */
 #if !FMSTR_SCI_TWOWIRE_ONLY
@@ -1188,9 +1186,7 @@ void FMSTR_SendResponse(FMSTR_BPTR pResponse, FMSTR_SIZE8 nLength)
         FMSTR_SCI_TE();
 #endif        
         /* kick on the SCI transmission (also clears TX Empty flag on some platforms) */
-        //dummySR = FMSTR_SCI_GETSR();
         FMSTR_SCI_PUTCHAR(FMSTR_SOB);
-        //FMSTR_UNUSED(dummySR);
     }
     
 #elif FMSTR_USE_JTAG

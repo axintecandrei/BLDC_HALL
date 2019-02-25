@@ -11,7 +11,7 @@ void MOC_SPEED_CTRL_INIT()
    MOC_SPEED_CTRL.OUTPUT_VOLT=0;
    MOC_SPEED_CTRL.OUTPUT_VOLT_K1=0;
    MOC_SPEED_CTRL.ERROR_SPEED=0;
-   MOC_SPEED_CTRL.P_GAIN=0.0000002;/*gains for speed controller when used only*/
+   MOC_SPEED_CTRL.P_GAIN=0.0002;/*gains for speed controller when used only*/
    MOC_SPEED_CTRL.I_GAIN=0;
 
    Set_Moc_Req_Speed(50);
@@ -32,14 +32,14 @@ void MOC_SPEED_CTRL_MAIN()
 
    to_be_applied_DTC = (((DC_LINK/2.0F) + MOC_SPEED_CTRL.OUTPUT_VOLT)/DC_LINK)*PWM_MAX_TICKS;
 
-   Set_Bldc_Pwm_U(to_be_applied_DTC);
-   Set_Bldc_Pwm_V(to_be_applied_DTC);
-   Set_Bldc_Pwm_W(to_be_applied_DTC);
+   Set_Bldc_Pwm_A(to_be_applied_DTC);
+   Set_Bldc_Pwm_B(to_be_applied_DTC);
+   Set_Bldc_Pwm_C(to_be_applied_DTC);
 
 #if 1
-   Set_Bldc_Pwm_U(((float)Get_Moc_Req_Speed()/100.0F)*4199);
-   Set_Bldc_Pwm_V(((float)Get_Moc_Req_Speed()/100.0F)*4199);
-   Set_Bldc_Pwm_W(((float)Get_Moc_Req_Speed()/100.0F)*4199);
+   Set_Bldc_Pwm_A(((float)Get_Moc_Req_Speed()/100.0F)*4199);
+   Set_Bldc_Pwm_B(((float)Get_Moc_Req_Speed()/100.0F)*4199);
+   Set_Bldc_Pwm_C(((float)Get_Moc_Req_Speed()/100.0F)*4199);
 #endif
 
 }

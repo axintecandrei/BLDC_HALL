@@ -12,10 +12,25 @@
 #include "mip_speed_est.h"
 #include "freemaster.h"
 #include "freemaster_private.h"
+
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
+#if CFG_DEBUG_FMSTR
+uint8_t interrupt_arrived;
+uint32_t TIM1_SR;
+uint32_t TIM1_CNT;
+uint32_t TIM1_CR1;
+uint32_t TIM1_CR2;
+uint32_t TIM1_CCER;
+uint32_t TIM1_CCR1;
+uint32_t TIM1_SMCR;
+uint32_t ADC_CR1;
+uint32_t ADC_CR2;
+uint32_t ADC_SR;
+#endif
+
 
 void NMI_Handler(void);
 void HardFault_Handler(void);

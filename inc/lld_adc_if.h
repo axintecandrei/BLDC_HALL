@@ -1,5 +1,5 @@
 /*
- * adc_if.h
+ * lld_adc_if.h
  *
  *  Created on: 14 iun. 2018
  *      Author: uidp7521
@@ -25,9 +25,7 @@ int16_t PORT__AdcVb;
 #define Get_AdcVb()   (*((const int16_t*) &PORT__AdcVb))
 
 
-ADC_HandleTypeDef hadc1;
-DMA_HandleTypeDef hdma_adc1;
+extern void ADC_INIT();
+extern void ADC_StartSeqConv();
 
-void ADC_INIT();
-void ADC_GetSeqConv();
 #endif /* ADC_IF_H_ */

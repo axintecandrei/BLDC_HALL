@@ -11,8 +11,16 @@
 
 int main(void)
 {
-
 	MAIN_INIT();
 
-	for(;;);
+	for(;;)
+		{
+/*
+#if(!FMSTR_DISABLE)
+    {
+      FMSTR_Poll();
+      FMSTR_Recorder();
+    }
+#endif*/
+		};
 }

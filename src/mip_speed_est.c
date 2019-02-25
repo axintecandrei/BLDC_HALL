@@ -23,7 +23,7 @@ void MIP_SPEED_EST_INIT()
 
    /*
    * Prescaler 83 => Fcnt = Ftim_clk/(Prescaler + 1)
-   *                 Fcnt = 84Khz
+   *                 Fcnt = 100Khz
    *                 Tcnt = 10 us
    */
    TIM2->PSC = 839;
@@ -57,7 +57,7 @@ void MIP_SPEED_EST_MAIN()
 	temp_speed = 1.0F/temp_speed;
 	/*Going from Hz to rpm, multiplying by 60
 	 * BUT, for 1 mech rot, there are 2 captures of the hall
-	 * so by divinding by 2 results the mech speed*/
+	 * so divinding by 2 results the mech speed*/
 	temp_speed = temp_speed * 30.0F;
 #endif
 

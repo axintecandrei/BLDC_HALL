@@ -13,20 +13,35 @@ void SysTick_Handler(void)
 	HAL_IncTick();
 	HAL_SYSTICK_IRQHandler();
 }
-uint32_t ADC_SR, ADC_CR2;
+
+
+void ADC_IRQHandler(void)
+{
+#if CFG_DEBUG_FMSTR
+	interrupt_arrived++;
+    TIM1_SR = TIM1->SR;
+    TIM1_CNT = TIM1->CNT;
+    TIM1_CR1 = TIM1->CR1;
+    TIM1_CR2 = TIM1->CR2;
+    TIM1_SMCR = TIM1->SMCR;
+    ADC_SR = ADC1->SR;
+    ADC_CR1 = ADC1->CR1;
+    ADC_CR2 = ADC1->CR2;
+    TIM1_CCER = TIM1->CCER ;
+    TIM1_CCR1 = TIM1->CCR1;
+#endif
+   task_scheduler();
+   ADC_CLEAR_IT();
+}
+
 void TIM1_UP_TIM10_IRQHandler(void)
 {
-
-   HAL_GPIO_TogglePin(GPIOC,D1);
-   ADC_SR = ADC1->SR;
-
-   task_scheduler();
-   ADC_CR2 = ADC1->CR2;
    HAL_TIM_IRQHandler(&htim1);
 }
 
 void TIM2_IRQHandler ()
 {
+
    static volatile uint32_t previous_capture_value = 0;
    uint32_t current_capture_value;
 
@@ -58,9 +73,6 @@ void TIM2_IRQHandler ()
 
 }
 
-/**
-* @brief This function handles USART2 global interrupt.
-*/
 void USART2_IRQHandler(void)
 {
 

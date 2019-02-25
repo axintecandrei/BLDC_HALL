@@ -15,24 +15,26 @@
  * DEFINES
  */
 /*pins on GPIOB*/
-#define PWM_EN_GATE  GPIO_PIN_3
-#define PWM2L        GPIO_PIN_0
-#define PWM3L        GPIO_PIN_1
+#define PWM_EN_GATE    GPIO_PIN_4
+#define PWM_B_L        GPIO_PIN_0
+#define PWM_C_L        GPIO_PIN_1
 
 /*pins on GPIOA*/
-#define PWM1H        GPIO_PIN_8
-#define PWM1L        GPIO_PIN_7
-#define PWM2H        GPIO_PIN_9
-#define PWM3H        GPIO_PIN_10
+#define PWM_A_H        GPIO_PIN_8
+#define PWM_A_L        GPIO_PIN_7
+#define PWM_B_H        GPIO_PIN_9
+#define PWM_C_H        GPIO_PIN_10
 
-#define PWM_U_ACTIVE     (0b0101)
-#define PWM_U_INACTIVE   (0b0000)
-#define PWM_V_ACTIVE     ((0b0101)<<4)
-#define PWM_V_INACTIVE   ((0b0000)<<4)
-#define PWM_W_ACTIVE     ((0b0101)<<8)
-#define PWM_W_INACTIVE   ((0b0000)<<8)
+#define PWM_A_ACTIVE     (0b0101)
+#define PWM_A_INACTIVE   (0b0000)
+#define PWM_B_ACTIVE     ((0b0101)<<4)
+#define PWM_B_INACTIVE   ((0b0000)<<4)
+#define PWM_C_ACTIVE     ((0b0101)<<8)
+#define PWM_C_INACTIVE   ((0b0000)<<8)
 
 #define BLDC_PWM_MAX_DTC (4199)
+
+#define TIM_CLEAR_IT      (TIM1->SR  &= ~TIM_IT_UPDATE)
 /*
  * TYPE-DEFs
  */

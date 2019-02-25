@@ -37,7 +37,7 @@
 
 #include "lld_gpio.h"
 
-
+#if CFG_GPIO_FOR_FUN_ON
 void GPIO_INIT()
 {
 	uint8_t button_nr;
@@ -143,4 +143,4 @@ void GPIO_ByteOnPins(uint8_t byte)
 	HAL_GPIO_WritePin(NIBBLE_2_PORT,D7,out_bits.bit_7);
 }
 
-
+#endif /*CFG_GPIO_FOR_FUN_ON*/

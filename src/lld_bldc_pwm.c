@@ -10,21 +10,71 @@
 uint16_t BLDC_PWM_MASK_LKT[8]=
 {
 0,
-PWM_U_INACTIVE | PWM_V_ACTIVE   | PWM_W_ACTIVE,  /*OFF -   +  */
-PWM_U_ACTIVE   | PWM_V_ACTIVE   | PWM_W_INACTIVE,/*-   +   OFF*/
-PWM_U_ACTIVE   | PWM_V_INACTIVE | PWM_W_ACTIVE,  /*-   OFF +  */
-PWM_U_ACTIVE   | PWM_V_INACTIVE | PWM_W_ACTIVE,  /*+   OFF -  */
-PWM_U_ACTIVE   | PWM_V_ACTIVE   | PWM_W_INACTIVE,/*+   -   OFF*/
-PWM_U_INACTIVE | PWM_V_ACTIVE   | PWM_W_ACTIVE,  /*OFF +   -  */
+PWM_A_INACTIVE | PWM_B_ACTIVE   | PWM_C_ACTIVE,  /*OFF -   +  */
+PWM_A_ACTIVE   | PWM_B_ACTIVE   | PWM_C_INACTIVE,/*-   +   OFF*/
+PWM_A_ACTIVE   | PWM_B_INACTIVE | PWM_C_ACTIVE,  /*-   OFF +  */
+PWM_A_ACTIVE   | PWM_B_INACTIVE | PWM_C_ACTIVE,  /*+   OFF -  */
+PWM_A_ACTIVE   | PWM_B_ACTIVE   | PWM_C_INACTIVE,/*+   -   OFF*/
+PWM_A_INACTIVE | PWM_B_ACTIVE   | PWM_C_ACTIVE,  /*OFF +   -  */
 0
 };
 
-void BLDC_PWM_GPIO_INIT();
+static void BLDC_PWM_GPIO_INIT();
+
+
+void BLDC_PWM_HANDLER()
+{
+	switch(Get_Hall_State())
+	{
+	case Sector_1:
+		TIM1->CCR2 = BLDC_PWM_MAX_DTC - Get_Bldc_Pwm_B();
+		TIM1->CCR3 = Get_Bldc_Pwm_C();
+
+	    TIM1->CCER = BLDC_PWM_MASK_LKT[Get_Hall_State()];
+		break;
+	case Sector_2:
+	    TIM1->CCR1 = BLDC_PWM_MAX_DTC - Get_Bldc_Pwm_A();
+		TIM1->CCR2 = Get_Bldc_Pwm_B();
+
+	    TIM1->CCER = BLDC_PWM_MASK_LKT[Get_Hall_State()];
+		break;
+	case Sector_3:
+	    TIM1->CCR1 = BLDC_PWM_MAX_DTC - Get_Bldc_Pwm_A();
+		TIM1->CCR3 = Get_Bldc_Pwm_C();
+
+	    TIM1->CCER = BLDC_PWM_MASK_LKT[Get_Hall_State()];
+		break;
+	case Sector_4:
+	    TIM1->CCR1 = Get_Bldc_Pwm_A();
+		TIM1->CCR3 = BLDC_PWM_MAX_DTC - Get_Bldc_Pwm_C();
+
+	    TIM1->CCER = BLDC_PWM_MASK_LKT[Get_Hall_State()];
+		break;
+	case Sector_5:
+	    TIM1->CCR1 = Get_Bldc_Pwm_A();
+		TIM1->CCR2 = BLDC_PWM_MAX_DTC - Get_Bldc_Pwm_B();
+
+	    TIM1->CCER = BLDC_PWM_MASK_LKT[Get_Hall_State()];
+		break;
+	case Sector_6:
+		TIM1->CCR2 = Get_Bldc_Pwm_B();
+		TIM1->CCR3 = BLDC_PWM_MAX_DTC - Get_Bldc_Pwm_C();
+
+	    TIM1->CCER = BLDC_PWM_MASK_LKT[Get_Hall_State()];
+		break;
+	default:
+		TIM1->CCER = BLDC_PWM_MASK_LKT[0];
+
+	}
+	HAL_GPIO_WritePin(GPIOB,PWM_EN_GATE,Get_Bldc_En_Gate());
+}
+
 
 void BLDC_PWM_INIT()
 {
 
 	  TIM_ClockConfigTypeDef sClockSourceConfig;
+	  TIM_MasterConfigTypeDef sMasterConfig;
 	  TIM_BreakDeadTimeConfigTypeDef sBreakDeadTimeConfig;
 	  TIM_OC_InitTypeDef sConfigOC;
 
@@ -41,6 +91,10 @@ void BLDC_PWM_INIT()
 
 	  HAL_TIM_PWM_Init(&htim1);
 
+	  sMasterConfig.MasterOutputTrigger = TIM_TRGO_UPDATE;//TIM_TRGO_OC1;//TIM_TRGO_UPDATE;
+	  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_ENABLE;
+	  HAL_TIMEx_MasterConfigSynchronization(&htim1, &sMasterConfig);
+
 	  sBreakDeadTimeConfig.OffStateRunMode = TIM_OSSR_DISABLE;
 	  sBreakDeadTimeConfig.OffStateIDLEMode = TIM_OSSI_DISABLE;
 	  sBreakDeadTimeConfig.LockLevel = TIM_LOCKLEVEL_OFF;
@@ -50,7 +104,7 @@ void BLDC_PWM_INIT()
 	  sBreakDeadTimeConfig.AutomaticOutput = TIM_AUTOMATICOUTPUT_DISABLE;
 	  HAL_TIMEx_ConfigBreakDeadTime(&htim1, &sBreakDeadTimeConfig);
 
-	  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+	  sConfigOC.OCMode = TIM_OCMODE_PWM2;
 	  sConfigOC.Pulse = 0; //Pulse = DTC * (TIM1 Period + 1)
 	  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
 	  sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
@@ -65,24 +119,20 @@ void BLDC_PWM_INIT()
 	  HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_3);
 
 	  BLDC_PWM_GPIO_INIT();
-      /*Enable update interrupt*/
-      TIM1->DIER = ((0x00<<24) | (0x00<<16) | (0x00<<8) | (0x01));
 
-      /*Disable output state of PWMxL/H channel*/
-	  TIM1->CCER = PWM_U_INACTIVE | PWM_V_INACTIVE | PWM_W_INACTIVE; /*Disable CHxN*/
+	  HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
+	  HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_2);
+	  HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_3);
 
-	  /*Init DTC with 50%*/
-	  Set_Bldc_Pwm_U(2099);
-	  Set_Bldc_Pwm_V(2099);
-	  Set_Bldc_Pwm_W(2099);
+      TIM1->DIER = ((0x00<<24) | (0x00<<16) | (0x00<<8) | (0x00));
 
-	  /*Disable the b6 driver output. fets will be in HiZ*/
+	  TIM1->CCER = PWM_A_ACTIVE | PWM_B_INACTIVE | PWM_C_INACTIVE; /*Disable CHxN*/
+
+	  /*Init app ports*/
+	  Set_Bldc_Pwm_A(2099);
+	  Set_Bldc_Pwm_B(2099);
+	  Set_Bldc_Pwm_C(2099);
 	  Set_Bldc_En_Gate(GATE_DISABLE);
-
-	  /* Enable the main output */
-	  __HAL_TIM_MOE_ENABLE(&htim1);
-	  /* Enable the Peripheral */
-      __HAL_TIM_ENABLE(&htim1);
 
 }
 
@@ -95,8 +145,8 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* tim_baseHandle)
     __HAL_RCC_TIM1_CLK_ENABLE();
 
     /* Peripheral interrupt init */
-    HAL_NVIC_SetPriority(TIM1_UP_TIM10_IRQn, 0, 1);
-    HAL_NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn);
+    /*HAL_NVIC_SetPriority(TIM1_UP_TIM10_IRQn, 0, 1);
+    HAL_NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn);*/
   }
 }
 
@@ -116,14 +166,14 @@ void BLDC_PWM_GPIO_INIT()
 	/*Enable bus clock for ports*/
 	__GPIOA_CLK_ENABLE();
 	__GPIOB_CLK_ENABLE();
-    GPIO_InitStruct.Pin = PWM1L| PWM1H | PWM2H | PWM3H;
+    GPIO_InitStruct.Pin = PWM_A_L| PWM_A_H | PWM_C_H | PWM_C_H;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     GPIO_InitStruct.Alternate = GPIO_AF1_TIM1;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = PWM2L | PWM3L;
+    GPIO_InitStruct.Pin = PWM_B_L | PWM_C_L;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
@@ -136,55 +186,5 @@ void BLDC_PWM_GPIO_INIT()
     GPIO_InitStruct.Speed = GPIO_SPEED_MEDIUM;
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 }
-
-
-void BLDC_PWM_HANDLER()
-{
-	switch(Get_Hall_State())
-	{
-	case Sector_1:
-		TIM1->CCR2 = BLDC_PWM_MAX_DTC - Get_Bldc_Pwm_V();
-		TIM1->CCR3 = Get_Bldc_Pwm_W();
-
-	    TIM1->CCER = BLDC_PWM_MASK_LKT[Get_Hall_State()];
-		break;
-	case Sector_2:
-	    TIM1->CCR1 = BLDC_PWM_MAX_DTC - Get_Bldc_Pwm_U();
-		TIM1->CCR2 = Get_Bldc_Pwm_V();
-
-	    TIM1->CCER = BLDC_PWM_MASK_LKT[Get_Hall_State()];
-		break;
-	case Sector_3:
-	    TIM1->CCR1 = BLDC_PWM_MAX_DTC - Get_Bldc_Pwm_U();
-		TIM1->CCR3 = Get_Bldc_Pwm_W();
-
-	    TIM1->CCER = BLDC_PWM_MASK_LKT[Get_Hall_State()];
-		break;
-	case Sector_4:
-	    TIM1->CCR1 = Get_Bldc_Pwm_U();
-		TIM1->CCR3 = BLDC_PWM_MAX_DTC - Get_Bldc_Pwm_W();
-
-	    TIM1->CCER = BLDC_PWM_MASK_LKT[Get_Hall_State()];
-		break;
-	case Sector_5:
-	    TIM1->CCR1 = Get_Bldc_Pwm_U();
-		TIM1->CCR2 = BLDC_PWM_MAX_DTC - Get_Bldc_Pwm_V();
-
-	    TIM1->CCER = BLDC_PWM_MASK_LKT[Get_Hall_State()];
-		break;
-	case Sector_6:
-		TIM1->CCR2 = Get_Bldc_Pwm_V();
-		TIM1->CCR3 = BLDC_PWM_MAX_DTC - Get_Bldc_Pwm_W();
-
-	    TIM1->CCER = BLDC_PWM_MASK_LKT[Get_Hall_State()];
-		break;
-	default:
-		TIM1->CCER = BLDC_PWM_MASK_LKT[0];
-		break;
-
-	}
-	HAL_GPIO_WritePin(GPIOB,PWM_EN_GATE,Get_Bldc_En_Gate());
-}
-
 
 

@@ -6,8 +6,8 @@
  */
 
 #include "lld_gp_timers.h"
-
-void TIMER2_INIT()
+//TODO : to be removed
+void TIMER3_INIT()
 {
    __TIM3_CLK_ENABLE();
    /*

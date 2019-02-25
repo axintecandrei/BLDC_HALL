@@ -10,6 +10,7 @@
 
 #include "stm32f4xx.h"
 #include "stm32f4xx_nucleo.h"
+#include "lld_system.h"
 #include "lld_adc.h"
 #include "lld_lcd.h"
 #include "lld_usart.h"

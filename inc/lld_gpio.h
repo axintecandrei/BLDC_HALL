@@ -7,9 +7,11 @@
 
 #ifndef GPIO_H_
 #define GPIO_H_
+
 #include "stm32f4xx.h"
 #include "utilities.h"
 
+#if CFG_GPIO_FOR_FUN_ON
 /*
  * DEFINES
  */
@@ -64,4 +66,5 @@ debounce_state_t DEBOUNCE_BUTTx[BUTT_NR];
 void GPIO_INIT();
 uint8_t GPIO_DebounceButton(GPIO_TypeDef* port, uint16_t button, debounce_state_t* port_debounce_str);
 void GPIO_ByteOnPins(uint8_t byte);
+#endif /* CFG_GPIO_FOR_FUN_ON */
 #endif /* GPIO_H_ */

@@ -6,8 +6,7 @@
  */
 #include "lld_lcd.h"
 
-
-
+#if CFG_LCD_ON
 void LCD_INIT()
 {
 
@@ -107,7 +106,6 @@ void LCD_ToogleEnable()
    HAL_GPIO_WritePin(LCD_CONTROL_PORT, LCD_EN, GPIO_PIN_RESET);
 }
 
-
 void LCD_ByteToPort(uint8_t byte_to_send)
 {
    /*Covert the byte to bit then Send them to pin ports*/
@@ -122,4 +120,4 @@ void LCD_ByteToPort(uint8_t byte_to_send)
 }
 
 
-
+#endif /*CFG_LCD_ON*/
