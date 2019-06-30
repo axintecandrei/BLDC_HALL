@@ -45,12 +45,14 @@ void MIP_SPEED_EST_INIT()
    TIM2->CR1  |= TIM_CR1_CEN;
 
    Set_Mip_Est_Speed(0);
+   Set_Mip_New_Capture_Flag(0);
 }
 
 void MIP_SPEED_EST_MAIN()
 {
 	float temp_speed;
-
+    static prev_capture_flag = 0;
+    static motor_standstill_cnt = 0;
 #if 0
 	/*The capture value represents count of 10us steps taken
 	 * between a rising and falling of hall sensor*/
@@ -63,17 +65,24 @@ void MIP_SPEED_EST_MAIN()
 	temp_speed = temp_speed * 30.0F;
 #endif
 
-	if(Get_Mip_Hall_InputCapture() !=0)
+	if(Get_Mip_New_Capture_Flag() == prev_capture_flag)
+	{
+		motor_standstill_cnt++;
+	}
+    /*if motor does not spins within 0.0333 ms -speed less than 500 rpm
+     * set speed to 0*/
+	if(motor_standstill_cnt < 333)
 	{
 		temp_speed = 6000000/(Get_Mip_Hall_InputCapture()*6);
-	}else
+	}
+	else
 	{
 		temp_speed = 0;
+		motor_standstill_cnt = 0;
 	}
 
-
 	Set_Mip_Est_Speed(temp_speed);
-
+	prev_capture_flag = Get_Mip_New_Capture_Flag();
 
 
 }

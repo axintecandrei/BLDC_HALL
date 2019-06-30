@@ -29,6 +29,9 @@ int32_t PORT_Mip_Hall_InputCapture;
 #define Set_Mip_Hall_InputCapture(x) (PORT_Mip_Hall_InputCapture = (x))
 #define Get_Mip_Hall_InputCapture()   (*((const int32_t *) &PORT_Mip_Hall_InputCapture))
 
+uint8_t PORT_Mip_New_Capture_Flag;
+#define Set_Mip_New_Capture_Flag(x) (PORT_Mip_New_Capture_Flag = (x))
+#define Get_Mip_New_Capture_Flag()   (*((const uint8_t *) &PORT_Mip_New_Capture_Flag))
 /*
  * FUNCTIONS
  */

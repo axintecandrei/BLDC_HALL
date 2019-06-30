@@ -77,7 +77,7 @@ void TIM2_IRQHandler ()
    previous_capture_value = TIM2->CCR1;
 #endif
 
-
+   Set_Mip_New_Capture_Flag(Get_Mip_New_Capture_Flag()^1);
 }
 
 void USART2_IRQHandler(void)
