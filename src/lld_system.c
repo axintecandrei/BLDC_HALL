@@ -61,7 +61,7 @@
   * @{
   */
 
-#include "stm32f4xx.h"
+#include "lld_system.h"
 
 #if !defined  (HSE_VALUE) 
   #define HSE_VALUE    ((uint32_t)8000000) /*!< Default value of the External oscillator in Hz */
@@ -258,15 +258,3 @@ void SystemCoreClockUpdate(void)
   SystemCoreClock >>= tmp;
 }
 
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-  
-/**
-  * @}
-  */    
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

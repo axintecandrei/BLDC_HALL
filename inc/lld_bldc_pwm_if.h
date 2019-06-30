@@ -8,6 +8,7 @@
 #ifndef LLD_BLDC_PWM_IF_H_
 #define LLD_BLDC_PWM_IF_H_
 #include "stm32f4xx.h"
+#include "config.h"
 /*
  * DEFINES
  */
@@ -35,6 +36,8 @@ typedef enum e_gate_states
 /*
  * VARIABLES
  */
+
+
 uint16_t PORT_Bldc_Pwm_A;
 #define Set_Bldc_Pwm_A(x) (PORT_Bldc_Pwm_A = (x))
 #define Get_Bldc_Pwm_A()   (*((const uint16_t *) &PORT_Bldc_Pwm_A))
@@ -47,9 +50,7 @@ uint16_t PORT_Bldc_Pwm_C;
 #define Set_Bldc_Pwm_C(x) (PORT_Bldc_Pwm_C = (x))
 #define Get_Bldc_Pwm_C()   (*((const uint16_t *) &PORT_Bldc_Pwm_C))
 
-uint8_t PORT_Bldc_En_Gate;
-#define Set_Bldc_En_Gate(x) (PORT_Bldc_En_Gate = (x))
-#define Get_Bldc_En_Gate()   (*((const uint8_t *) &PORT_Bldc_En_Gate))
+
 /*
  * FUNCTIONS
  */

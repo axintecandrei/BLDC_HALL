@@ -875,6 +875,7 @@ HAL_StatusTypeDef HAL_ADC_Stop_IT(ADC_HandleTypeDef* hadc)
   *         the configuration information for the specified ADC.
   * @retval None
   */
+uint8_t deep_into_adc_handler;
 void HAL_ADC_IRQHandler(ADC_HandleTypeDef* hadc)
 {
   uint32_t tmp1 = 0U, tmp2 = 0U;
@@ -883,7 +884,7 @@ void HAL_ADC_IRQHandler(ADC_HandleTypeDef* hadc)
   assert_param(IS_FUNCTIONAL_STATE(hadc->Init.ContinuousConvMode));
   assert_param(IS_ADC_REGULAR_LENGTH(hadc->Init.NbrOfConversion));
   assert_param(IS_ADC_EOCSelection(hadc->Init.EOCSelection));
-  
+
   tmp1 = __HAL_ADC_GET_FLAG(hadc, ADC_FLAG_EOC);
   tmp2 = __HAL_ADC_GET_IT_SOURCE(hadc, ADC_IT_EOC);
   /* Check End of conversion flag for regular channels */
@@ -895,13 +896,15 @@ void HAL_ADC_IRQHandler(ADC_HandleTypeDef* hadc)
       /* Set ADC state */
       SET_BIT(hadc->State, HAL_ADC_STATE_REG_EOC); 
     }
-    
+
     /* Determine whether any further conversion upcoming on group regular   */
     /* by external trigger, continuous mode or scan sequence on going.      */
     /* Note: On STM32F4, there is no independent flag of end of sequence.   */
     /*       The test of scan sequence on going is done either with scan    */
     /*       sequence disabled or with end of conversion flag set to        */
-    /*       of end of sequence.                                            */
+    /*       of end of sequence.
+     *                                                                      */
+
     if(ADC_IS_SOFTWARE_START_REGULAR(hadc)                   &&
        (hadc->Init.ContinuousConvMode == DISABLE)            &&
        (HAL_IS_BIT_CLR(hadc->Instance->SQR1, ADC_SQR1_L) || 
@@ -911,6 +914,7 @@ void HAL_ADC_IRQHandler(ADC_HandleTypeDef* hadc)
       /* Note: Overrun interrupt was enabled with EOC interrupt in          */
       /* HAL_ADC_Start_IT(), but is not disabled here because can be used   */
       /* by overrun IRQ process below.                                      */
+
       __HAL_ADC_DISABLE_IT(hadc, ADC_IT_EOC);
       
       /* Set ADC state */
@@ -940,7 +944,7 @@ void HAL_ADC_IRQHandler(ADC_HandleTypeDef* hadc)
       /* Set ADC state */
       SET_BIT(hadc->State, HAL_ADC_STATE_INJ_EOC);
     }
-
+    deep_into_adc_handler++;
     /* Determine whether any further conversion upcoming on group injected  */
     /* by external trigger, scan sequence on going or by automatic injected */
     /* conversion from group regular (same conditions as group regular      */

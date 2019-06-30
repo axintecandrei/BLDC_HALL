@@ -14,6 +14,7 @@ static void GPIO_INIT(void);
 void ADC_INIT(void)
 {
 	uint8_t counter;
+
 	/*Set prescaler
 	 * Fosc 84 MHz
 	 * Presaler DIV4
@@ -72,7 +73,7 @@ void ADC_INIT(void)
 #endif
 
 
-    HAL_NVIC_SetPriority(ADC_IRQn, 1, 1);
+    HAL_NVIC_SetPriority(ADC_IRQn, 0, 1);
     HAL_NVIC_EnableIRQ(ADC_IRQn);
 
 #if !CFG_ADC_REG_CONV
@@ -154,8 +155,14 @@ uint16_t ADC_GetSingleConv()
 
 void ADC_StartSeqConv()
 {
+	uint16_t ADC_Ia_raw;
+	uint16_t ADC_Ib_raw;
+	uint16_t ADC_Ic_raw;
+	uint16_t ADC_V_DcLink_raw;
 #if CFG_ADC_REG_CONV
-
+	uint16_t ADC_Va_raw;
+	uint16_t ADC_Vb_raw;
+	uint16_t ADC_Vc_raw;
 	ADC1->CR2 |=  ADC_CR2_SWSTART;
 	while(!((ADC1->SR & ADC_SR_EOC)>>ADC_SR_EOC_Pos));
 
@@ -176,5 +183,44 @@ void ADC_StartSeqConv()
 	ADC_GET_RAW_VAL(Adc_Ib_ch, ADC_Ib_raw);
 	ADC_GET_RAW_VAL(Adc_Ic_ch, ADC_Ic_raw);
 	ADC_GET_RAW_VAL(Adc_DC_Link_ch, ADC_V_DcLink_raw);
+#endif
+}
+
+void LLD_ADC_GET_RAW_VAL()
+{
+	uint16_t ADC_Ia_raw;
+	uint16_t ADC_Ib_raw;
+	uint16_t ADC_Ic_raw;
+	uint16_t ADC_V_DcLink_raw;
+
+#if CFG_ADC_REG_CONV
+
+	uint16_t ADC_Va_raw;
+	uint16_t ADC_Vb_raw;
+	uint16_t ADC_Vc_raw;
+
+	ADC1->CR2 |=  ADC_CR2_SWSTART;
+	while(!((ADC1->SR & ADC_SR_EOC)>>ADC_SR_EOC_Pos));
+
+	ADC_GET_RAW_VAL(Adc_Ia_ch, ADC_Ia_raw);
+	ADC_GET_RAW_VAL(Adc_Ib_ch, ADC_Ib_raw);
+	ADC_GET_RAW_VAL(Adc_Ic_ch, ADC_Ic_raw);
+
+	ADC_GET_RAW_VAL(Adc_Va_ch, ADC_Va_raw);
+	ADC_GET_RAW_VAL(Adc_Ib_ch, ADC_Vb_raw);
+	ADC_GET_RAW_VAL(Adc_Vb_ch, ADC_Vc_raw);
+	ADC_GET_RAW_VAL(Adc_DC_Link_ch, ADC_V_DcLink_raw);
+#else
+
+	ADC_GET_RAW_VAL(Adc_Ia_ch, ADC_Ia_raw);
+	ADC_GET_RAW_VAL(Adc_Ib_ch, ADC_Ib_raw);
+	ADC_GET_RAW_VAL(Adc_Ic_ch, ADC_Ic_raw);
+	ADC_GET_RAW_VAL(Adc_DC_Link_ch, ADC_V_DcLink_raw);
+
+	Set_AdcIa(ADC_Ia_raw);
+	Set_AdcIb(ADC_Ib_raw);
+	Set_AdcIc(ADC_Ic_raw);
+	Set_AdcDcLink(ADC_V_DcLink_raw);
+
 #endif
 }

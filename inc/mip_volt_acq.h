@@ -11,8 +11,8 @@
 /*
  * DEFINES
  */
-
-
+#define ADC2VOLT_FACTOR   (0.000805664F)    /*(3.3V/4096)*/
+#define VOLT_DIV_FACTOR   (7.973947F)/*(34.8kOhm + 4.99kOhm)/4.99kOhm*/
 /*
  * TYPE-DEFs
  */

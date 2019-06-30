@@ -12,7 +12,8 @@
 /*
  * DEFINES
  */
-
+#define HALL_SPEED_IN_PIN   GPIO_PIN_15
+#define HALL_SPEED_IN_PORT  GPIOA
 
 /*
  * TYPE-DEFs

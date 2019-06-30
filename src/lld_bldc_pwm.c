@@ -24,6 +24,7 @@ static void BLDC_PWM_GPIO_INIT();
 
 void BLDC_PWM_HANDLER()
 {
+
 	switch(Get_Hall_State())
 	{
 	case Sector_1:
@@ -66,7 +67,15 @@ void BLDC_PWM_HANDLER()
 		TIM1->CCER = BLDC_PWM_MASK_LKT[0];
 
 	}
-	HAL_GPIO_WritePin(GPIOB,PWM_EN_GATE,Get_Bldc_En_Gate());
+#if CFG_DEBUG_FMSTR
+	TIM1->CCER = PWM_A_ACTIVE | PWM_B_ACTIVE | PWM_C_ACTIVE; /*Enaable all channels*/
+	TIM1->CCR1 = Get_Bldc_Pwm_A();
+	TIM1->CCR2 = Get_Bldc_Pwm_B();
+	TIM1->CCR3 = Get_Bldc_Pwm_C();
+#else
+	HAL_GPIO_WritePin(GPIOB,PWM_EN_GATE,BLDC_EN_GATE);
+#endif
+
 }
 
 
@@ -79,9 +88,9 @@ void BLDC_PWM_INIT()
 	  TIM_OC_InitTypeDef sConfigOC;
 
 	  htim1.Instance = TIM1;
-	  htim1.Init.Prescaler = 0; //TIM1 Freq = SysCLK / (Prescaler +1) => Prescaler = (SysCLK / TIM1(wanted)Freq) - 1
+	  htim1.Init.Prescaler = TIM1_PSC; //TIM1 Freq = SysCLK / (Prescaler +1) => Prescaler = (SysCLK / TIM1(wanted)Freq) - 1
 	  htim1.Init.CounterMode = TIM_COUNTERMODE_CENTERALIGNED2;
-	  htim1.Init.Period = 4199; // PWM Freq = TIM1 Freq /(TIM1 Period + 1) => TIM1 Period = (TIM1 Freq / PWM Freq) - 1
+	  htim1.Init.Period = TIM1_ARR; // PWM Freq = TIM1 Freq /(TIM1 Period + 1) => TIM1 Period = (TIM1 Freq / PWM Freq) - 1
 	  htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	  htim1.Init.RepetitionCounter = 1;
 	  HAL_TIM_Base_Init(&htim1);
@@ -126,13 +135,14 @@ void BLDC_PWM_INIT()
 
       TIM1->DIER = ((0x00<<24) | (0x00<<16) | (0x00<<8) | (0x00));
 
-	  TIM1->CCER = PWM_A_ACTIVE | PWM_B_INACTIVE | PWM_C_INACTIVE; /*Disable CHxN*/
+	  TIM1->CCER = PWM_A_INACTIVE | PWM_B_INACTIVE | PWM_C_INACTIVE; /*Disable CHxN*/
 
 	  /*Init app ports*/
 	  Set_Bldc_Pwm_A(2099);
 	  Set_Bldc_Pwm_B(2099);
 	  Set_Bldc_Pwm_C(2099);
-	  Set_Bldc_En_Gate(GATE_DISABLE);
+	  BLDC_EN_GATE = GATE_DISABLE;
+	  HAL_GPIO_WritePin(GPIOB,PWM_EN_GATE,BLDC_EN_GATE);
 
 }
 
@@ -153,8 +163,8 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* tim_baseHandle)
 void BLDC_PWM_GPIO_INIT()
 {
 
-  GPIO_InitTypeDef GPIO_InitStruct;
-
+   GPIO_InitTypeDef GPIO_InitStruct;
+   GPIO_InitTypeDef GPIO_InitStruct_;
   /**TIM1 GPIO Configuration
     PA7     ------> TIM1_CH1N
     PB0     ------> TIM1_CH2N
@@ -166,25 +176,26 @@ void BLDC_PWM_GPIO_INIT()
 	/*Enable bus clock for ports*/
 	__GPIOA_CLK_ENABLE();
 	__GPIOB_CLK_ENABLE();
-    GPIO_InitStruct.Pin = PWM_A_L| PWM_A_H | PWM_C_H | PWM_C_H;
+    GPIO_InitStruct.Pin = PWM_A_L| PWM_A_H | PWM_B_H | PWM_C_H ;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     GPIO_InitStruct.Alternate = GPIO_AF1_TIM1;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = PWM_B_L | PWM_C_L;
+    GPIO_InitStruct.Pin =  PWM_B_L | PWM_C_L;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     GPIO_InitStruct.Alternate = GPIO_AF1_TIM1;
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin   = PWM_EN_GATE;
-    GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull  = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_MEDIUM;
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+    GPIO_InitStruct_.Pin   = PWM_EN_GATE;
+    GPIO_InitStruct_.Mode  = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct_.Pull  = GPIO_NOPULL;
+    GPIO_InitStruct_.Speed = GPIO_SPEED_MEDIUM;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct_);
 }
 
 

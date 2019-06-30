@@ -17,5 +17,5 @@ void _2MS_LOOP (void);
 
 void _10MS_LOOP (void);
 
-
+uint32_t MAIN_CLOCK;
 #endif /*__TASKS_H*/

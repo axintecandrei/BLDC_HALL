@@ -13,7 +13,7 @@ void MAIN_INIT(void)
 
 	HALL_INIT();
 	MIP_SPEED_EST_INIT();
-	//MOC_SPEED_CTRL_INIT();
+	MOC_SPEED_CTRL_INIT();
 
 	USART2_UART_Init();
 	FMSTR_Init();

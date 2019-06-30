@@ -7,7 +7,8 @@
 
 #ifndef MIP_VOLT_ACQ_IF_H_
 #define MIP_VOLT_ACQ_IF_H_
-
+#include "../inc/lld_adc_if.h"
+#include "../inc/utilities.h"
 /*
  * DEFINES
  */
@@ -21,7 +22,9 @@
 /*
  * VARIABLES
  */
-
+uint16_t PORT_Mip_Volt_DCLink;
+#define Set_Mip_Volt_DCLink(x) (PORT_Mip_Volt_DCLink = (x))
+#define Get_Mip_Volt_DCLink()   (*((const uint16_t *) &PORT_Mip_Volt_DCLink))
 
 /*
  * FUNCTIONS

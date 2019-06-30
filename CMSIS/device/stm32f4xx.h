@@ -160,7 +160,7 @@
 #elif defined(STM32F401xC)
   #include "stm32f401xc.h"
 #elif defined(STM32F401xE)
-  #include "stm32f401xe.h"
+  #include "../CMSIS/device/stm32f401xe.h"
 #elif defined(STM32F410Tx)
   #include "stm32f410tx.h"
 #elif defined(STM32F410Cx)
@@ -188,7 +188,7 @@
 #elif defined(STM32F423xx)
   #include "stm32f423xx.h"
 #else
- #error "Please select first the target STM32F4xx device used in your application (in stm32f4xx.h file)"
+ //#error "Please select first the target STM32F4xx device used in your application (in stm32f4xx.h file)"
 #endif
 
 /**

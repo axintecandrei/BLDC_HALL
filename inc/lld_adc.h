@@ -1,9 +1,8 @@
 #ifndef ADC_H_
 #define ADC_H_
 
-#include "../CMSIS/device/stm32f4xx.h"
 #include "../inc/lld_adc_if.h"
-#include "../inc/utilities.h"
+
 
 /*
  * DEFINES
@@ -82,13 +81,7 @@
 __IO uint16_t ADC_TO_DMA_BUFFER[ADC_BUFFER_SIZE];
 #endif
 
-uint16_t ADC_Ia_raw;
-uint16_t ADC_Ib_raw;
-uint16_t ADC_Ic_raw;
-uint16_t ADC_Va_raw;
-uint16_t ADC_Vb_raw;
-uint16_t ADC_Vc_raw;
-uint16_t ADC_V_DcLink_raw;
+
 
 /*
  * FUNCTIONS

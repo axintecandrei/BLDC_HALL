@@ -17,8 +17,10 @@ void SysTick_Handler(void)
 
 void ADC_IRQHandler(void)
 {
+
 #if CFG_DEBUG_FMSTR
-	interrupt_arrived++;
+	//meas_period ^=1;
+	HAL_GPIO_WritePin(GPIOB,PWM_EN_GATE,1);
     TIM1_SR = TIM1->SR;
     TIM1_CNT = TIM1->CNT;
     TIM1_CR1 = TIM1->CR1;
@@ -29,9 +31,14 @@ void ADC_IRQHandler(void)
     ADC_CR2 = ADC1->CR2;
     TIM1_CCER = TIM1->CCER ;
     TIM1_CCR1 = TIM1->CCR1;
+    TIM1_CCR2 = TIM1->CCR2;
+    TIM1_CCR1 = TIM1->CCR3;
 #endif
    task_scheduler();
    ADC_CLEAR_IT();
+#if CFG_DEBUG_FMSTR
+   HAL_GPIO_WritePin(GPIOB,PWM_EN_GATE,0);
+#endif
 }
 
 void TIM1_UP_TIM10_IRQHandler(void)

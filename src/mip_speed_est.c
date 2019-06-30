@@ -14,12 +14,14 @@ void MIP_SPEED_EST_INIT()
    /**TIM2 GPIO Configuration
    PA15     ------> TIM2_CH1
    */
-   GPIO_InitStruct.Pin       = GPIO_PIN_15;
+   /*Enable bus clock for ports*/
+   __GPIOA_CLK_ENABLE();
+   GPIO_InitStruct.Pin       = HALL_SPEED_IN_PIN;
    GPIO_InitStruct.Mode      = GPIO_MODE_AF_PP;
    GPIO_InitStruct.Pull      = GPIO_NOPULL;
    GPIO_InitStruct.Speed     = GPIO_SPEED_FREQ_VERY_HIGH;
    GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
-   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+   HAL_GPIO_Init(HALL_SPEED_IN_PORT, &GPIO_InitStruct);
 
    /*
    * Prescaler 83 => Fcnt = Ftim_clk/(Prescaler + 1)
@@ -33,7 +35,7 @@ void MIP_SPEED_EST_INIT()
    TIM2->CCMR1 = ((0x00<<24) | (0x00<<16) | (0x00<<8) | (0x01));
 
    /*Enable input on ch1*/
-   TIM2->CCER = 0b0001;
+   TIM2->CCER = 0b0111;
    TIM2->DIER = 2;
 
    /* Peripheral interrupt init */
@@ -63,7 +65,7 @@ void MIP_SPEED_EST_MAIN()
 
 	if(Get_Mip_Hall_InputCapture() !=0)
 	{
-		temp_speed = 6000000/Get_Mip_Hall_InputCapture();
+		temp_speed = 6000000/(Get_Mip_Hall_InputCapture()*6);
 	}else
 	{
 		temp_speed = 0;
@@ -71,5 +73,7 @@ void MIP_SPEED_EST_MAIN()
 
 
 	Set_Mip_Est_Speed(temp_speed);
+
+
 
 }

@@ -13,13 +13,14 @@ void HALL_INIT()
 	 * if properly managed*/
 	GPIO_InitTypeDef GPIOx_Init;
 
+	/*Enable bus clock for ports*/
+	__GPIOB_CLK_ENABLE();
 	GPIOx_Init.Pin   = HALL_A | HALL_B |HALL_C;
 	GPIOx_Init.Mode  = GPIO_MODE_INPUT;
 	GPIOx_Init.Pull  = GPIO_PULLDOWN;
 	GPIOx_Init.Speed = GPIO_SPEED_HIGH;
 
-	/*Enable bus clock for ports*/
-	__GPIOA_CLK_ENABLE();
+
     /*HAL function that will do the proper initialization*/
 	HAL_GPIO_Init(HALL_PORT, &GPIOx_Init);
 
