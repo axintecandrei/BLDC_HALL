@@ -68,7 +68,7 @@ void BLDC_PWM_HANDLER()
 
 	}
 #if CFG_DEBUG_FMSTR
-	TIM1->CCER = PWM_A_ACTIVE | PWM_B_ACTIVE | PWM_C_ACTIVE; /*Enaable all channels*/
+	TIM1->CCER = PWM_A_ACTIVE | PWM_B_ACTIVE | PWM_C_ACTIVE; /*Enable all channels*/
 	TIM1->CCR1 = Get_Bldc_Pwm_A();
 	TIM1->CCR2 = Get_Bldc_Pwm_B();
 	TIM1->CCR3 = Get_Bldc_Pwm_C();
@@ -132,9 +132,9 @@ void BLDC_PWM_INIT()
 	  HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
 	  HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_2);
 	  HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_3);
-
-      TIM1->DIER = ((0x00<<24) | (0x00<<16) | (0x00<<8) | (0x00));
-
+#if CFG_ADC_REG_CONV
+      TIM1->DIER = ((0x00<<24) | (0x00<<16) | (0x00<<8) | (0x01));
+#endif
 	  TIM1->CCER = PWM_A_INACTIVE | PWM_B_INACTIVE | PWM_C_INACTIVE; /*Disable CHxN*/
 
 	  /*Init app ports*/
@@ -155,8 +155,10 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* tim_baseHandle)
     __HAL_RCC_TIM1_CLK_ENABLE();
 
     /* Peripheral interrupt init */
-    /*HAL_NVIC_SetPriority(TIM1_UP_TIM10_IRQn, 0, 1);
-    HAL_NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn);*/
+#if CFG_ADC_REG_CONV
+    HAL_NVIC_SetPriority(TIM1_UP_TIM10_IRQn, 0, 1);
+    HAL_NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn);
+#endif
   }
 }
 

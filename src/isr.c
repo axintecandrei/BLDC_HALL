@@ -43,6 +43,7 @@ void ADC_IRQHandler(void)
 
 void TIM1_UP_TIM10_IRQHandler(void)
 {
+   task_scheduler();
    HAL_TIM_IRQHandler(&htim1);
 }
 
@@ -50,7 +51,7 @@ void TIM2_IRQHandler ()
 {
 
    static volatile uint32_t previous_capture_value = 0;
-   uint32_t current_capture_value;
+   static uint32_t current_capture_value;
 
    current_capture_value = TIM2->CCR1;
 #if 0
@@ -76,8 +77,7 @@ void TIM2_IRQHandler ()
    }
    previous_capture_value = TIM2->CCR1;
 #endif
-
-
+   Set_Mip_New_Capture_Flag(Get_Mip_New_Capture_Flag()^1);
 }
 
 void USART2_IRQHandler(void)

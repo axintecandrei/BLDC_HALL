@@ -7,6 +7,8 @@
 #include "lld_adc_if.h"
 #include "lld_bldc_pwm_if.h"
 #include "lld_hall_if.h"
+#include "mip_volt_acq_if.h"
+#include "mip_current_acq_if.h"
 #include "freemaster.h"
 #include "freemaster_private.h"
 

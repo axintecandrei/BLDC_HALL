@@ -207,9 +207,13 @@ void LLD_ADC_GET_RAW_VAL()
 	ADC_GET_RAW_VAL(Adc_Ic_ch, ADC_Ic_raw);
 
 	ADC_GET_RAW_VAL(Adc_Va_ch, ADC_Va_raw);
-	ADC_GET_RAW_VAL(Adc_Ib_ch, ADC_Vb_raw);
-	ADC_GET_RAW_VAL(Adc_Vb_ch, ADC_Vc_raw);
+	ADC_GET_RAW_VAL(Adc_Vb_ch, ADC_Vb_raw);
+	ADC_GET_RAW_VAL(Adc_Vc_ch, ADC_Vc_raw);
 	ADC_GET_RAW_VAL(Adc_DC_Link_ch, ADC_V_DcLink_raw);
+
+	Set_AdcVa(ADC_Va_raw);
+	Set_AdcVb(ADC_Vb_raw);
+	Set_AdcVc(ADC_Vc_raw);
 #else
 
 	ADC_GET_RAW_VAL(Adc_Ia_ch, ADC_Ia_raw);
@@ -217,10 +221,9 @@ void LLD_ADC_GET_RAW_VAL()
 	ADC_GET_RAW_VAL(Adc_Ic_ch, ADC_Ic_raw);
 	ADC_GET_RAW_VAL(Adc_DC_Link_ch, ADC_V_DcLink_raw);
 
+#endif
 	Set_AdcIa(ADC_Ia_raw);
 	Set_AdcIb(ADC_Ib_raw);
 	Set_AdcIc(ADC_Ic_raw);
 	Set_AdcDcLink(ADC_V_DcLink_raw);
-
-#endif
 }

@@ -15,6 +15,9 @@
 #define HALL_SPEED_IN_PIN   GPIO_PIN_15
 #define HALL_SPEED_IN_PORT  GPIOA
 
+#define CCW                 (-1)
+#define CW                  (1)
+
 /*
  * TYPE-DEFs
  */
