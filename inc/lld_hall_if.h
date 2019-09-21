@@ -14,7 +14,7 @@
 
 uint8_t PORT_Hall_State;
 #define Set_Hall_State(x) (PORT_Hall_State = (x))
-#define Get_Hall_State()   (*((const uint16_t *) &PORT_Hall_State))
+#define Get_Hall_State()   (*((const uint8_t *) &PORT_Hall_State))
 
 extern void HALL_INIT();
 extern void HALL_GET_STATE();

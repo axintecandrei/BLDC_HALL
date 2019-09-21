@@ -5,7 +5,7 @@ void _100US_LOOP (void)
 {
    MAIN_CLOCK++;
    LLD_ADC_GET_RAW_VAL();
-   MIP_VOLT_ACQ_MAIN ();
+   MIP_VOLT_ACQ_MAIN();
    MIP_CURR_ACQ_MAIN();
    HALL_GET_STATE();
    MIP_SPEED_EST_MAIN();

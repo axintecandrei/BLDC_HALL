@@ -10,13 +10,14 @@
 #include "util.h"
 #include "moc_speed_ctrl_if.h"
 #include "mip_speed_est_if.h"
+#include "mip_volt_acq_if.h"
 #include "lld_bldc_pwm_if.h"
 /*
  * DEFINES
  */
 #define Ts              (10000)
 #define DC_LINK         (12.0F)
-#define PWM_MAX_TICKS   (4199)
+#define PWM_MAX_TICKS   (2099)
 
 /*
  * TYPE-DEFs
