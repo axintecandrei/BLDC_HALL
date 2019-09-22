@@ -30,4 +30,5 @@ int16_t PORT_Moc_Req_Speed;
  */
 extern void MOC_SPEED_CTRL_INIT();
 extern void MOC_SPEED_CTRL_MAIN();
+extern void MOC_CURRENT_CTRL_MAIN();
 #endif /* MOC_SPEED_CTRL_IF_H_ */

@@ -32,3 +32,22 @@ void UTIL_ByteToBits (uint8_t in_byte, byteAsbits_t* out_bits )
 	out_bits->bit_6 = (in_byte& 64)>>6;
 	out_bits->bit_7 = (in_byte&128)>>7;
 }
+
+
+int32_t UTIL_Maxof3(int32_t n1 ,int32_t n2,int32_t n3)
+{
+
+    if( n1>=n2 && n1>=n3)
+    {
+    	return  n1;
+    }
+    else if (n2>=n1 && n2>=n3)
+    {
+    	return  n2;
+    }
+    else
+    {
+    	return  n3;
+    }
+
+}

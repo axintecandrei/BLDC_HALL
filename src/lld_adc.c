@@ -73,10 +73,11 @@ void ADC_INIT(void)
 #endif
 
 
-    HAL_NVIC_SetPriority(ADC_IRQn, 0, 1);
-    HAL_NVIC_EnableIRQ(ADC_IRQn);
+
 
 #if !CFG_ADC_REG_CONV
+	HAL_NVIC_SetPriority(ADC_IRQn, 0, 1);
+	HAL_NVIC_EnableIRQ(ADC_IRQn);
     ADC1->CR1 |= ADC_CR1_JEOCIE;
 #endif
 	/*Enable ADC*/

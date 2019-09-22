@@ -17,7 +17,7 @@ void SysTick_Handler(void)
 
 void ADC_IRQHandler(void)
 {
-
+#if !CFG_ADC_REG_CONV
 #if CFG_DEBUG_FMSTR
 	//meas_period ^=1;
 	HAL_GPIO_WritePin(GPIOB,PWM_EN_GATE,1);
@@ -39,19 +39,22 @@ void ADC_IRQHandler(void)
 #if CFG_DEBUG_FMSTR
    HAL_GPIO_WritePin(GPIOB,PWM_EN_GATE,0);
 #endif
+#endif
 }
 
 void TIM1_UP_TIM10_IRQHandler(void)
 {
+#if CFG_ADC_REG_CONV
    task_scheduler();
    HAL_TIM_IRQHandler(&htim1);
+#endif
 }
 
 void TIM2_IRQHandler ()
 {
 
    static volatile uint32_t previous_capture_value = 0;
-   static uint32_t current_capture_value;
+   uint32_t current_capture_value;
 
    current_capture_value = TIM2->CCR1;
 #if 0

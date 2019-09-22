@@ -8,11 +8,15 @@
 
 void MOC_SPEED_CTRL_INIT()
 {
-   MOC_SPEED_CTRL.OUTPUT_VOLT=0;
-   MOC_SPEED_CTRL.OUTPUT_VOLT_K1=0;
+   MOC_SPEED_CTRL.OUTPUT_CURR=0;
    MOC_SPEED_CTRL.ERROR_SPEED=0;
    MOC_SPEED_CTRL.P_GAIN=0.00025;/*gains for speed controller when used only*/
    MOC_SPEED_CTRL.I_GAIN=0.00125;
+
+   MOC_CURR_CTRL.OUTPUT_VOLT=0;
+   MOC_CURR_CTRL.ERROR_CURRENT=0;
+   MOC_CURR_CTRL.P_GAIN=0.000;/*gains for speed controller when used only*/
+   MOC_CURR_CTRL.I_GAIN=0.000;
 
    Set_Moc_Req_Speed(0);
 
@@ -30,11 +34,11 @@ void MOC_SPEED_CTRL_MAIN()
    MOC_SPEED_CTRL.ERROR_SPEED = (float)(loc_req_speed) - (float)(Get_Mip_Est_Speed());
    MOC_SPEED_CTRL.P_PART = (MOC_SPEED_CTRL.P_GAIN * MOC_SPEED_CTRL.ERROR_SPEED);
    MOC_SPEED_CTRL.I_PART += (MOC_SPEED_CTRL.I_GAIN * MOC_SPEED_CTRL.ERROR_SPEED)/Ts;
-   MOC_SPEED_CTRL.OUTPUT_VOLT = MOC_SPEED_CTRL.P_PART + MOC_SPEED_CTRL.I_PART;
+   MOC_SPEED_CTRL.OUTPUT_CURR = MOC_SPEED_CTRL.P_PART + MOC_SPEED_CTRL.I_PART;
 
-   MOC_SPEED_CTRL.OUTPUT_VOLT = LIM(MOC_SPEED_CTRL.OUTPUT_VOLT,(-dc_link), (dc_link));
+   MOC_SPEED_CTRL.OUTPUT_CURR = LIM(MOC_SPEED_CTRL.OUTPUT_CURR,(-dc_link), (dc_link));
 
-   to_be_applied_DTC = ((dc_link + MOC_SPEED_CTRL.OUTPUT_VOLT)/dc_link)*PWM_MAX_TICKS;
+   to_be_applied_DTC = ((dc_link + MOC_SPEED_CTRL.OUTPUT_CURR)/dc_link)*PWM_MAX_TICKS;
 
    Set_Bldc_Pwm_A(to_be_applied_DTC);
    Set_Bldc_Pwm_B(to_be_applied_DTC);
@@ -46,4 +50,28 @@ void MOC_SPEED_CTRL_MAIN()
    Set_Bldc_Pwm_C(((float)Get_Moc_Req_Speed()/100.0F)*4199);
 #endif
 
+}
+
+void MOC_CURRENT_CTRL_MAIN()
+{
+	   uint16_t to_be_applied_DTC;
+	   int16_t  loc_req_current;
+	   float dc_link;
+	   //float curr_gradient = 0.005;
+
+	   dc_link = (float)Get_Mip_Volt_DCLink()*0.0005F;
+	   loc_req_current = MOC_SPEED_CTRL.OUTPUT_CURR/*LIM(MOC_SPEED_CTRL.OUTPUT_CURR,MOC_SPEED_CTRL.OUTPUT_CURR-curr_gradient,MOC_SPEED_CTRL.OUTPUT_CURR+curr_gradient)*/;
+
+	   MOC_CURR_CTRL.ERROR_CURRENT = (float)(loc_req_current) - (float)(Get_Mip_Acq_Max_Is());
+	   MOC_CURR_CTRL.P_PART = (MOC_CURR_CTRL.P_GAIN * MOC_CURR_CTRL.ERROR_CURRENT);
+	   MOC_CURR_CTRL.I_PART += (MOC_CURR_CTRL.I_GAIN * MOC_CURR_CTRL.ERROR_CURRENT)/Ts;
+	   MOC_CURR_CTRL.OUTPUT_VOLT = MOC_CURR_CTRL.P_PART + MOC_CURR_CTRL.I_PART;
+
+	   MOC_CURR_CTRL.OUTPUT_VOLT = LIM(MOC_CURR_CTRL.OUTPUT_VOLT,(-dc_link), (dc_link));
+
+	   to_be_applied_DTC = ((dc_link + MOC_CURR_CTRL.OUTPUT_VOLT)/dc_link)*PWM_MAX_TICKS;
+
+	   Set_Bldc_Pwm_A(to_be_applied_DTC);
+	   Set_Bldc_Pwm_B(to_be_applied_DTC);
+	   Set_Bldc_Pwm_C(to_be_applied_DTC);
 }

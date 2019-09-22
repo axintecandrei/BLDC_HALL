@@ -26,4 +26,5 @@ typedef struct byteAsbits_s
 
 void UTIL_delay(uint32_t moment);
 void UTIL_ByteToBits (uint8_t in_byte, byteAsbits_t* out_bits );
+int32_t UTIL_Maxof3(int32_t n1 ,int32_t n2,int32_t n3);
 #endif /* UTILITIES_H_ */

@@ -33,6 +33,9 @@ int16_t PORT_Mip_Acq_Curr_W;
 #define Set_Mip_Acq_Curr_W(x) (PORT_Mip_Acq_Curr_W = (x))
 #define Get_Mip_Acq_Curr_W()   (*((const int16_t *) &PORT_Mip_Acq_Curr_W))
 
+int16_t PORT_Mip_Acq_Max_Is;
+#define Set_Mip_Acq_Max_Is(x) (PORT_Mip_Acq_Max_Is = (x))
+#define Get_Mip_Acq_Max_Is()   (*((const int16_t *) &PORT_Mip_Acq_Max_Is))
 /*
  * FUNCTIONS
  */

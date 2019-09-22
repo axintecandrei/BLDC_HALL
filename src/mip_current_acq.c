@@ -36,4 +36,6 @@ void MIP_CURR_ACQ_MAIN()
 	temp_curr /= R_SHUNT;
 
 	Set_Mip_Acq_Curr_W(temp_curr*100);
+
+	Set_Mip_Acq_Max_Is(UTIL_Maxof3(Get_Mip_Acq_Curr_U(),Get_Mip_Acq_Curr_V(),Get_Mip_Acq_Curr_W()));
 }

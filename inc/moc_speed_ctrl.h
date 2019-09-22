@@ -11,6 +11,7 @@
 #include "moc_speed_ctrl_if.h"
 #include "mip_speed_est_if.h"
 #include "mip_volt_acq_if.h"
+#include "mip_current_acq_if.h"
 #include "lld_bldc_pwm_if.h"
 /*
  * DEFINES
@@ -24,8 +25,7 @@
  */
 typedef struct speed_ctrl
 {
-  float OUTPUT_VOLT;
-  float OUTPUT_VOLT_K1;
+  float OUTPUT_CURR;
   float ERROR_SPEED;
   float P_GAIN;
   float I_GAIN;
@@ -33,10 +33,21 @@ typedef struct speed_ctrl
   float I_PART;
 }speed_ctrl_t;
 
+typedef struct curr_ctrl
+{
+  float OUTPUT_VOLT;
+  float ERROR_CURRENT;
+  float P_GAIN;
+  float I_GAIN;
+  float P_PART;
+  float I_PART;
+}curr_ctrl_t;
+
 /*
  * VARIABLES
  */
 speed_ctrl_t MOC_SPEED_CTRL;
+curr_ctrl_t MOC_CURR_CTRL;
 
 /*
  * FUNCTIONS
