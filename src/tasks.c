@@ -22,6 +22,10 @@ void _100US_LOOP (void)
 	   MOC_SPEED_CTRL_MAIN();
 	   MOC_CURRENT_CTRL_MAIN();
 	   break;
+   case 3 :
+	   MOC_VOLTAGE_VECT_MAIN();
+	   break;
+
    }
 
    BLDC_PWM_HANDLER();

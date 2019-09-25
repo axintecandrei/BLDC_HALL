@@ -67,6 +67,7 @@ void BLDC_PWM_HANDLER()
 		TIM1->CCER = BLDC_PWM_MASK_LKT[0];
 
 	}
+
 #if CFG_DEBUG_FMSTR
 	TIM1->CCER = PWM_A_ACTIVE | PWM_B_ACTIVE | PWM_C_ACTIVE; /*Enable all channels*/
 	TIM1->CCR1 = Get_Bldc_Pwm_A();
@@ -107,7 +108,7 @@ void BLDC_PWM_INIT()
 	  sBreakDeadTimeConfig.OffStateRunMode = TIM_OSSR_DISABLE;
 	  sBreakDeadTimeConfig.OffStateIDLEMode = TIM_OSSI_DISABLE;
 	  sBreakDeadTimeConfig.LockLevel = TIM_LOCKLEVEL_OFF;
-	  sBreakDeadTimeConfig.DeadTime = 168;
+	  sBreakDeadTimeConfig.DeadTime = TIM1_DTG;
 	  sBreakDeadTimeConfig.BreakState = TIM_BREAK_DISABLE;
 	  sBreakDeadTimeConfig.BreakPolarity = TIM_BREAKPOLARITY_HIGH;
 	  sBreakDeadTimeConfig.AutomaticOutput = TIM_AUTOMATICOUTPUT_DISABLE;

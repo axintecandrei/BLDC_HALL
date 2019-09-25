@@ -10,8 +10,8 @@ void MOC_SPEED_CTRL_INIT()
 {
    MOC_SPEED_CTRL.OUTPUT_CURR=0;
    MOC_SPEED_CTRL.ERROR_SPEED=0;
-   MOC_SPEED_CTRL.P_GAIN=0.00025;/*gains for speed controller when used only*/
-   MOC_SPEED_CTRL.I_GAIN=0.00125;
+   MOC_SPEED_CTRL.P_GAIN=0.0000046;/* 0.000014107;// gains for speed controller when used only*/
+   MOC_SPEED_CTRL.I_GAIN=0.001986 ;//0.00626;;
 
    MOC_CURR_CTRL.OUTPUT_VOLT=0;
    MOC_CURR_CTRL.ERROR_CURRENT=0;
@@ -69,6 +69,20 @@ void MOC_CURRENT_CTRL_MAIN()
 
 	   MOC_CURR_CTRL.OUTPUT_VOLT = LIM(MOC_CURR_CTRL.OUTPUT_VOLT,(-dc_link), (dc_link));
 
+	   to_be_applied_DTC = ((dc_link + MOC_CURR_CTRL.OUTPUT_VOLT)/dc_link)*PWM_MAX_TICKS;
+
+	   Set_Bldc_Pwm_A(to_be_applied_DTC);
+	   Set_Bldc_Pwm_B(to_be_applied_DTC);
+	   Set_Bldc_Pwm_C(to_be_applied_DTC);
+}
+
+void MOC_VOLTAGE_VECT_MAIN()
+{
+	   uint16_t to_be_applied_DTC;
+	   float dc_link;
+
+
+	   dc_link = (float)Get_Mip_Volt_DCLink()*0.0005F;
 	   to_be_applied_DTC = ((dc_link + MOC_CURR_CTRL.OUTPUT_VOLT)/dc_link)*PWM_MAX_TICKS;
 
 	   Set_Bldc_Pwm_A(to_be_applied_DTC);
